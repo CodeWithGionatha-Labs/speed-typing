@@ -1,7 +1,7 @@
 import cn from "classnames";
 import Caret from "./Caret";
 
-const UserInput = ({
+const UserTypings = ({
   userInput,
   words,
   className = "",
@@ -10,11 +10,11 @@ const UserInput = ({
   words: string;
   className?: string;
 }) => {
-  const userTypedCharacters = userInput.split("");
+  const typedCharacters = userInput.split("");
 
   return (
     <div className={className}>
-      {userTypedCharacters.map((char, index) => (
+      {typedCharacters.map((char, index) => (
         <Character
           key={`${char}_${index}`}
           actual={char}
@@ -49,4 +49,4 @@ const Character = ({
   );
 };
 
-export default UserInput;
+export default UserTypings;

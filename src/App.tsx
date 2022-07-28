@@ -2,7 +2,7 @@ import React from "react";
 import GeneratedWords from "./components/GeneratedWords";
 import RestartButton from "./components/RestartButton";
 import Results from "./components/Results";
-import UserInput from "./components/UserInput";
+import UserTypings from "./components/UserTypings";
 import useEngine from "./hooks/useEngine";
 import { calculateAccuracyPercentage } from "./utils/helpers";
 
@@ -16,7 +16,7 @@ const App = () => {
       <WordsContainer>
         <GeneratedWords key={words} words={words} />
         {/* User typed characters will be overlayed over the generated words */}
-        <UserInput
+        <UserTypings
           className="absolute inset-0"
           words={words}
           userInput={typed}
@@ -24,7 +24,7 @@ const App = () => {
       </WordsContainer>
       <RestartButton
         className={"mx-auto mt-10 text-slate-500"}
-        onClick={restart}
+        onRestart={restart}
       />
       <Results
         className="mt-10"

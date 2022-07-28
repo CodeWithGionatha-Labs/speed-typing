@@ -32,3 +32,9 @@ export const calculateAccuracyPercentage = (errors: number, total: number) => {
 export const formatPercentage = (percentage: number) => {
   return percentage.toFixed(0) + "%";
 };
+
+export const debug = (str: string) => {
+  if (process.env.NODE_ENV === "development") {
+    console.debug(str);
+  }
+};

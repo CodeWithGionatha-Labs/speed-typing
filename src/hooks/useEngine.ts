@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { findDifferences } from "../utils/helpers";
+import { debug, findDifferences } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
@@ -23,12 +23,13 @@ const useEngine = () => {
   const areWordsFinished = cursor === words.length;
 
   const restart = useCallback(() => {
+    debug("restarting...");
+    resetCountdown();
+    resetTotalTyped();
     setState("start");
     setErrors(0);
     updateWords();
-    resetCountdown();
     clearTyped();
-    resetTotalTyped();
   }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
 
   const countErrors = useCallback(() => {
@@ -38,25 +39,30 @@ const useEngine = () => {
     );
   }, [typed, words, cursor]);
 
-  // when the user type the first letter, we've started
+  // as soon the user starts typing the first letter, we start
   useEffect(() => {
     if (isStarting) {
       setState("run");
       startCountdown();
     }
-  }, [isStarting, startCountdown]);
+  }, [isStarting, startCountdown, cursor]);
 
   // when the time is up, we've finished
   useEffect(() => {
     if (!timeLeft) {
+      debug("time is up...");
       setState("finish");
       countErrors();
     }
   }, [timeLeft, countErrors]);
 
-  // when the current words are all filled up, show another set of words
+  /**
+   * when the current words are all filled up,
+   * we generate and show another set of words
+   */
   useEffect(() => {
     if (areWordsFinished) {
+      debug("words are finished...");
       countErrors();
       updateWords();
       clearTyped();

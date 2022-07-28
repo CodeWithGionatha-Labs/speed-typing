@@ -51,7 +51,13 @@ const Results = ({
       >
         Errors: {errors}
       </motion.li>
-      {/* <span>Total: {total}</span> */}
+      <motion.li
+        initial={initial}
+        animate={animate}
+        transition={{ duration: 0.3, delay: 1.4 }}
+      >
+        Typed: {total}
+      </motion.li>
     </motion.ul>
   );
 };
