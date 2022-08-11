@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { debug, findDifferences } from "../utils/helpers";
+import { countErrors, debug } from "../utils/helpers";
 import useCountdown from "./useCountdown";
 import useTypings from "./useTypings";
 import useWords from "./useWords";
@@ -32,11 +32,10 @@ const useEngine = () => {
     clearTyped();
   }, [clearTyped, updateWords, resetCountdown, resetTotalTyped]);
 
-  const countErrors = useCallback(() => {
-    const wordsReached = words.substring(0, cursor);
-    setErrors(
-      (prevErrors) => prevErrors + findDifferences(typed, wordsReached)
-    );
+  const sumErrors = useCallback(() => {
+    debug(`cursor: ${cursor} - words.length: ${words.length}`);
+    const wordsReached = words.substring(0, Math.min(cursor, words.length));
+    setErrors((prevErrors) => prevErrors + countErrors(typed, wordsReached));
   }, [typed, words, cursor]);
 
   // as soon the user starts typing the first letter, we start
@@ -45,16 +44,16 @@ const useEngine = () => {
       setState("run");
       startCountdown();
     }
-  }, [isStarting, startCountdown, cursor]);
+  }, [isStarting, startCountdown]);
 
   // when the time is up, we've finished
   useEffect(() => {
-    if (!timeLeft) {
+    if (!timeLeft && state === "run") {
       debug("time is up...");
       setState("finish");
-      countErrors();
+      sumErrors();
     }
-  }, [timeLeft, countErrors]);
+  }, [timeLeft, state, sumErrors]);
 
   /**
    * when the current words are all filled up,
@@ -63,19 +62,11 @@ const useEngine = () => {
   useEffect(() => {
     if (areWordsFinished) {
       debug("words are finished...");
-      countErrors();
+      sumErrors();
       updateWords();
       clearTyped();
     }
-  }, [
-    cursor,
-    words,
-    clearTyped,
-    typed,
-    areWordsFinished,
-    updateWords,
-    countErrors,
-  ]);
+  }, [clearTyped, areWordsFinished, updateWords, sumErrors]);
 
   return { state, words, typed, errors, restart, timeLeft, totalTyped };
 };

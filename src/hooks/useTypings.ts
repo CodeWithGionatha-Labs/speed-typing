@@ -15,16 +15,16 @@ const useTypings = (enabled: boolean) => {
       switch (key) {
         case "Backspace":
           setTyped((prev) => prev.slice(0, -1));
-          setCursor(cursor - 1);
+          setCursor((cursor) => cursor - 1);
           totalTyped.current -= 1;
           break;
         default:
           setTyped((prev) => prev.concat(key));
-          setCursor(cursor + 1);
+          setCursor((cursor) => cursor + 1);
           totalTyped.current += 1;
       }
     },
-    [cursor, enabled]
+    [enabled]
   );
 
   const clearTyped = useCallback(() => {

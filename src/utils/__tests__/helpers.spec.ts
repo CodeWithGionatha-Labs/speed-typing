@@ -1,4 +1,4 @@
-import { calculateAccuracyPercentage, findDifferences } from "../helpers";
+import { calculateAccuracyPercentage, countErrors } from "../helpers";
 
 describe("Helpers functions", () => {
   describe("Calculate Accuracy", () => {
@@ -29,27 +29,30 @@ describe("Helpers functions", () => {
 
   describe("Count Errors", () => {
     it("should count 0 errors", () => {
-      expect(findDifferences("", "")).toBe(0);
-      expect(findDifferences("test", "test")).toBe(0);
-      expect(findDifferences("very long TEXT", "very long TEXT")).toBe(0);
+      expect(countErrors("", "")).toBe(0);
+      expect(countErrors(" ", "")).toBe(0);
+      expect(countErrors("aaa", "")).toBe(0);
+      expect(countErrors("test", "test")).toBe(0);
+      expect(countErrors("very long TEXT", "very long TEXT")).toBe(0);
     });
 
     it("should count 1 error", () => {
-      expect(findDifferences("a", "b")).toBe(1);
-      expect(findDifferences("test", "Test")).toBe(1);
-      expect(findDifferences("", " ")).toBe(1);
+      expect(countErrors("a", "b")).toBe(1);
+      expect(countErrors("aaa", "b")).toBe(1);
+      expect(countErrors("test", "Test")).toBe(1);
+      expect(countErrors("", " ")).toBe(1);
     });
 
     it("should count 2 error", () => {
-      expect(findDifferences("aa", "bb")).toBe(2);
-      expect(findDifferences("test", "TesT")).toBe(2);
-      expect(findDifferences("", "  ")).toBe(2);
+      expect(countErrors("aa", "bb")).toBe(2);
+      expect(countErrors("test", "TesT")).toBe(2);
+      expect(countErrors("", "  ")).toBe(2);
     });
 
     it("should count 4 error", () => {
-      expect(findDifferences("aaaa", "bbbb")).toBe(4);
-      expect(findDifferences("test", "TEST")).toBe(4);
-      expect(findDifferences("", "    ")).toBe(4);
+      expect(countErrors("aaaa", "bbbb")).toBe(4);
+      expect(countErrors("test", "TEST")).toBe(4);
+      expect(countErrors("", "    ")).toBe(4);
     });
   });
 });

@@ -8,7 +8,7 @@ export const isKeyboardCodeAllowed = (code: string) => {
   );
 };
 
-export const findDifferences = (actual: string, expected: string) => {
+export const countErrors = (actual: string, expected: string) => {
   const expectedCharacters = expected.split("");
 
   return expectedCharacters.reduce((errors, expectedChar, i) => {
